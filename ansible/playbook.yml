@@ -5,12 +5,9 @@
   become: yes
   vars_files:
     - ./vars/app_params.yml
-  # tasks:
-  #   - ping:
   roles:
     - nginx-install
     - docker-install
-    # - env-init
     - app-init
     - mysql-install
     - systemd-unit
