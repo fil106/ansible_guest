@@ -1,0 +1,8 @@
+---
+
+app_dir: '/opt/app'
+mysql_port: 3333
+mysql_server_address: '127.0.0.1'
+mysql_data_dir: '{{ app_dir }}/mysql/data'
+mysql_root_password: 'Celestial352'
+mysql_port: '3306'

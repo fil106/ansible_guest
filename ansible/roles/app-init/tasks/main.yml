@@ -1,0 +1,25 @@
+---
+# Tasks for app-init
+
+- name: "Устанавливаем недостоющие пакеты"
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: ['python3-pip', 'python3-setuptools', 'python3-dev', 'libev-dev', 'locales']
+
+- name: "Устанавливаем недостоющие зависимости python"
+  pip: name={{ item }}
+  loop: ['flask', 'bjoern', 'sqlalchemy', 'sqlalchemy_utils', 'pymysql', 'pytest', 'cryptography']
+
+- name: "Проверяем есть ли en_US.UTF-8"
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+
+- name: "Копируем файлы приложения"
+  copy:
+    src: guest_book/
+    dest: "{{ app_dir }}/guest_book"
+
+- name: "Копируем __main__.py в корень приложения"
+  copy:
+    src: __main__.py
+    dest: "{{ app_dir }}"

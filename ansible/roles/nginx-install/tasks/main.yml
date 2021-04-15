@@ -1,0 +1,29 @@
+---
+# Tasks for nginx-install
+
+- name: "Установка nginx"
+  apt: 
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: "Гененрируем конфиг файл для nginx"
+  template:
+    src: guestbook.j2
+    dest: /etc/nginx/sites-available/guestbook
+  notify:
+    - Restart nginx
+
+- name: "Создаем symlink в /etc/nginx/sites-enabled"
+  file:
+    src: /etc/nginx/sites-available/guestbook
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  become: yes
+  notify:
+    - Restart nginx
+
+- name: "Копируем фронт в {{ app_dir }}/front"
+  copy:
+    src: ./front/
+    dest: "{{ app_dir }}/front"

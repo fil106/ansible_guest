@@ -1,0 +1,29 @@
+---
+# Tasks for mysql-install
+
+- name: "Создаём папку {{ mysql_data_dir }}"
+  file:
+    path: '{{ mysql_data_dir }}'
+    state: directory
+
+- name: "Получаем docker image - mysql"
+  docker_image:
+    name: mysql
+    source: pull
+
+- name: "Создаём контейнер mysql"
+  docker_container:
+    name: mysql
+    image: mysql
+    restart_policy: always
+    state: started
+    volumes:
+      - .{{ mysql_data_dir }}/var/lib/mysql/:/var/lib/mysql
+      - .{{ mysql_data_dir }}/etc/mysql/conf.d/:/etc/mysql/conf.d
+      - .{{ mysql_data_dir }}/var/log/mysql/:/var/log/mysql
+    ports:
+      - "{{ mysql_port | default('3306') }}:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_SERVER_ADDRESS: "{{ mysql_server_address | default('127.0.0.1') }}"
+      MYSQL_DATABASE: 'guest_book'

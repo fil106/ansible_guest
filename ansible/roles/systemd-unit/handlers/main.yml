@@ -1,0 +1,8 @@
+---
+# Handlers for systemd-unit
+
+- name: Start myapp
+  systemd:
+    name: myapp
+    state: started
+    enabled: yes

@@ -1,0 +1,16 @@
+---
+# Playbook with tasks for GuestBook https://github.com/murik099/rpd_test
+
+- hosts: node1
+  become: yes
+  vars_files:
+    - ./vars/app_params.yml
+  # tasks:
+  #   - ping:
+  roles:
+    - nginx-install
+    - docker-install
+    # - env-init
+    - app-init
+    - mysql-install
+    - systemd-unit
